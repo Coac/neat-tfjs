@@ -1,0 +1,25 @@
+{
+  "name": "neat-tfjs",
+  "version": "0.0.1",
+  "description": "NEAT using tensorflow.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Coac/neat-tfjs.git"
+  },
+  "author": "Victor Le",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Coac/neat-tfjs/issues"
+  },
+  "homepage": "https://github.com/Coac/neat-tfjs#readme",
+  "dependencies": {
+    "@tensorflow/tfjs": "^0.10.3"
+  },
+  "devDependencies": {
+    "standard": "^11.0.1"
+  }
+}
