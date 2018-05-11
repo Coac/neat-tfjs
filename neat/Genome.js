@@ -9,6 +9,27 @@ class Genome {
     this.INNOVATION = 0
   }
 
+  crossover (gen2) {
+    const child = new Genome()
+    child.INNOVATION = this.INNOVATION
+
+    child.nodes = new Map(Array.from(this.nodes.entries()).map(entry => [entry[0], entry[1].copy()]))
+
+    for (const entry of this.connections) {
+      const innovation = entry[0]
+      const con = entry[1]
+
+      // matching
+      if (gen2.connections.has(innovation)) {
+        child.connections.set(innovation, Math.random() > 0.5 ? con.copy() : gen2.connections.get(innovation).copy())
+      } else {
+        child.connections.set(innovation, con.copy())
+      }
+    }
+
+    return child
+  }
+
   mutate () {
     const rand = Math.random()
     let cumulProba = 0
@@ -73,8 +94,8 @@ class Genome {
     this.addConnection(inNode.id, outNode.id)
   }
 
-  addConnection (inNodeId, outNodeId) {
-    const newCon = new ConnectionGene(inNodeId, outNodeId, true, this.INNOVATION++)
+  addConnection (inNodeId, outNodeId, enabled = true) {
+    const newCon = new ConnectionGene(inNodeId, outNodeId, enabled, this.INNOVATION++)
     this.connections.set(newCon.innovation, newCon)
     const inNode = this.nodes.get(inNodeId)
     const outNode = this.nodes.get(outNodeId)
