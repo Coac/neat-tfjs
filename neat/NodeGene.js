@@ -4,7 +4,11 @@ class NodeGene {
     this.id = id
     this.bias = bias || 0
 
-    this.outConnections = new Map()
+    // Used by addConnectionMutation to not generate cycle
+    this.level = 0
+
+    this.outConnectionsId = []
+    this.inConnectionsId = []
   }
 
   copy () {
