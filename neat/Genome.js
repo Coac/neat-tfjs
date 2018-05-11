@@ -9,11 +9,38 @@ class Genome {
     this.INNOVATION = 0
   }
 
+  mutate () {
+    const rand = Math.random()
+    let cumulProba = 0
+    let selectedMutation = this.weightMutation
+
+    const mutations = []
+    mutations.push({proba: 0.2, mutation: this.addNodeMutation})
+    mutations.push({proba: 0.8, mutation: this.addConnectionMutation})
+
+    mutations.every(function (object) {
+      var proba = object.proba
+      var mutation = object.mutation
+      cumulProba += proba
+      if (rand < cumulProba) {
+        selectedMutation = mutation
+        return false
+      }
+      return true
+    })
+
+    selectedMutation.call(this)
+  }
+
   biasMutation () {
 
   }
 
   weightMutation () {
+
+  }
+
+  resetWeightMutation () {
 
   }
 

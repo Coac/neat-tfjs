@@ -18,7 +18,8 @@ class Graph {
       edges: edges
     }
     const options = {
-      edges: {arrows: 'to'}
+      edges: {arrows: 'to'},
+      layout: {randomSeed: 2}
     }
     const network = new vis.Network(container, data, options)
   }

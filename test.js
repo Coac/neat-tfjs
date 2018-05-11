@@ -20,12 +20,12 @@ gen.addConnection(1, 4)
 gen.addConnection(4, 3)
 gen.addConnection(0, 4)
 
-for (let i = 0; i < 2; i++) {
-  gen.addNodeMutation()
-}
+// for (let i = 0; i < 2; i++) {
+//   gen.addNodeMutation()
+// }
 
 for (let i = 0; i < 10; i++) {
-  gen.addConnectionMutation()
+  gen.mutate()
 }
 
 Graph.draw(gen)
