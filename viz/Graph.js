@@ -18,12 +18,8 @@ class Graph {
       edges: edges
     }
     const options = {
-      edges: {arrows: 'to'},
-      layout: {
-        hierarchical: {
-          direction: 'UD'
-        }
-      }}
+      edges: {arrows: 'to'}
+    }
     const network = new vis.Network(container, data, options)
   }
 }

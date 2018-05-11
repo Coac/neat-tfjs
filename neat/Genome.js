@@ -6,8 +6,6 @@ class Genome {
     this.nodes = new Map()
     this.connections = new Map()
 
-    this.nodesByRank = []
-
     this.INNOVATION = 0
   }
 
@@ -23,7 +21,7 @@ class Genome {
     const disabledCon = this.connections.get(Math.floor(Math.random() * this.connections.size))
     disabledCon.disable()
 
-    const node = new NodeGene('HIDDEN', this.nodes.size + 1)
+    const node = new NodeGene('HIDDEN', this.nodes.size)
     this.addNode(node)
 
     this.addConnection(disabledCon.inNodeId, node.id)
@@ -31,8 +29,12 @@ class Genome {
   }
 
   addConnectionMutation () {
-    const inNode = this.nodes[Math.floor(Math.random() * this.nodes.length)]
-    const outNode = this.nodes[Math.floor(Math.random() * this.nodes.length)]
+    const inNode = this.nodes.get(Math.floor(Math.random() * this.nodes.size))
+    const acceptableNodes = this.getNodes().filter(node => node.level >= inNode.level)
+
+    if (acceptableNodes.length === 0) { return }
+
+    const outNode = acceptableNodes[Math.floor(Math.random() * acceptableNodes.length)]
 
     if (inNode === outNode) { return }
     if (this._existConnection(inNode, outNode)) { return }
@@ -42,8 +44,6 @@ class Genome {
   }
 
   addConnection (inNodeId, outNodeId) {
-    this._calculateAllNodeLevel()
-
     const newCon = new ConnectionGene(inNodeId, outNodeId, true, this.INNOVATION++)
     this.connections.set(newCon.innovation, newCon)
     const inNode = this.nodes.get(inNodeId)
@@ -51,6 +51,8 @@ class Genome {
 
     inNode.outConnectionsId.push(newCon.innovation)
     outNode.inConnectionsId.push(newCon.innovation)
+
+    this._calculateAllNodeLevel()
   }
 
   addNode (node) {
@@ -75,13 +77,9 @@ class Genome {
     }
   }
 
-  _existConnection (inNode, outNode) {
-    for (let i = 0; i < this.connections.length; i++) {
-      const con = this.connections[i]
-      if ((con.inNodeId === inNode.id && con.outNodeId === outNode.id) ||
-        (con.outNodeId === inNode.id && con.inNodeId === outNode.id)) {
-        return true
-      }
+  _existConnection (nodeIn, nodeOut) {
+    for (let conId of nodeIn.outConnectionsId) {
+      if (this.connections.get(conId).outNodeId === nodeOut.id) { return true }
     }
 
     return false
