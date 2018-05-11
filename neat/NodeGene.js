@@ -12,7 +12,12 @@ class NodeGene {
   }
 
   copy () {
-    return new NodeGene(this.type, this.id)
+    const clone = new NodeGene(this.type, this.id, this.bias)
+    clone.level = this.level
+    clone.outConnectionsId = this.outConnectionsId.slice()
+    clone.inConnectionsId = this.inConnectionsId.slice()
+
+    return clone
   }
 }
 

@@ -45,7 +45,10 @@ class Genome {
   }
 
   addNodeMutation () {
-    const disabledCon = this.connections.get(Math.floor(Math.random() * this.connections.size))
+    this.INNOVATION++
+
+    const connections = this.getConnections()
+    const disabledCon = connections[Math.floor(Math.random() * connections.length)]
     disabledCon.disable()
 
     const node = new NodeGene('HIDDEN', this.nodes.size)
@@ -122,8 +125,9 @@ class Genome {
 
   copy () {
     const clone = new Genome()
-    clone.nodes = this.getNodes().nodes.map(node => node.copy())
-    clone.connections = this.getConnections().map(connection => connection.copy())
+    clone.nodes = new Map(Array.from(this.nodes.entries()).map(entry => [entry[0], entry[1].copy()]))
+    clone.connections = new Map(Array.from(this.connections.entries()).map(entry => [entry[0], entry[1].copy()]))
+    clone.INNOVATION = this.INNOVATION
     return clone
   }
 }
