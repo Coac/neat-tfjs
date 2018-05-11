@@ -1,3 +1,5 @@
+const vis = require('vis')
+
 class Graph {
   static draw (genome) {
     const nodes = new vis.DataSet(genome.nodes.map(node => {
@@ -17,7 +19,6 @@ class Graph {
     }
     const options = {edges: {arrows: 'to'}}
     const network = new vis.Network(container, data, options)
-    console.log(genome)
   }
 }
 

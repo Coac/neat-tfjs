@@ -4,7 +4,7 @@
   "description": "NEAT using tensorflow.js",
   "main": "index.js",
   "scripts": {
-    "watch": "parcel --no-hmr --open index.html ",
+    "watch": "parcel index.html ",
     "build": "parcel build index.html  --no-minify --public-url ./"
   },
   "repository": {
@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/Coac/neat-tfjs#readme",
   "dependencies": {
-    "@tensorflow/tfjs": "^0.10.3"
+    "@tensorflow/tfjs": "^0.10.3",
+    "vis": "^4.21.0"
   },
   "devDependencies": {
     "babel-plugin-transform-runtime": "^6.23.0",
