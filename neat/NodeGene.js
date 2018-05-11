@@ -1,6 +1,6 @@
 class NodeGene {
   constructor (type, id, bias) {
-    this.type = 'INPUT' // INPUT, HIDDEN, OUTPUT
+    this.type = type // INPUT, HIDDEN, OUTPUT
     this.id = id
     this.bias = bias || 0
 
@@ -8,6 +8,8 @@ class NodeGene {
   }
 
   copy () {
-    return new NodeGene(type, id)
+    return new NodeGene(this.type, this.id)
   }
 }
+
+module.exports = NodeGene

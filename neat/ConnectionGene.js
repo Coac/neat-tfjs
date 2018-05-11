@@ -28,3 +28,5 @@ function generateId () {
 function gaussianRnd () {
   return ((Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random()) - 3) / 3
 }
+
+module.exports = ConnectionGene
