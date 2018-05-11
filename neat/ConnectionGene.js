@@ -14,6 +14,10 @@ class ConnectionGene {
     this.weight = gaussianRnd()
   }
 
+  disable () {
+    this.enabled = false
+  }
+
   copy () {
     const clone = new ConnectionGene(this.inNodeId, this.outNodeId, this.enabled, this.innovation)
     clone.weight = this.weight

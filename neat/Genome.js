@@ -16,7 +16,14 @@ class Genome {
   }
 
   addNodeMutation () {
+    const disabledCon = this.connections[Math.floor(Math.random() * this.connections.length)]
+    disabledCon.disable()
 
+    const node = new NodeGene('HIDDEN', this.nodes.length + 1)
+    this.nodes.push(node)
+
+    this.connections.push(new ConnectionGene(disabledCon.inNodeId, node.id, true, 1)) // TODO innovation
+    this.connections.push(new ConnectionGene(node.id, disabledCon.outNodeId, true, 1)) // TODO innovation
   }
 
   addConnectionMutation () {
