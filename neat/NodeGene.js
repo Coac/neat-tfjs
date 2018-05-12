@@ -1,8 +1,7 @@
 class NodeGene {
-  constructor (type, id, bias) {
+  constructor (type, id) {
     this.type = type // INPUT, HIDDEN, OUTPUT
     this.id = id
-    this.bias = bias || 0
 
     // Used by addConnectionMutation to not generate cycle
     this.level = 0
@@ -12,7 +11,7 @@ class NodeGene {
   }
 
   copy () {
-    const clone = new NodeGene(this.type, this.id, this.bias)
+    const clone = new NodeGene(this.type, this.id)
     clone.level = this.level
     clone.outConnectionsId = this.outConnectionsId.slice()
     clone.inConnectionsId = this.inConnectionsId.slice()

@@ -1,3 +1,4 @@
+const tf = require('@tensorflow/tfjs')
 class TFGenome {
   static toTFGraph (genome) {
     return tf.tidy(() => {
@@ -9,13 +10,12 @@ class TFGenome {
       nodes.sort((a, b) => a.level - b.level)
 
       for (let node of nodes) {
-        let out = tf.scalar(1)
+        let out = tf.scalar(0)
         for (let conId of node.inConnectionsId) {
           const con = genome.connections.get(conId)
           if (!con.enabled) { continue }
 
           const inNode = genome.nodes.get(con.inNodeId)
-          if (!inNode.out) { console.log('strange ??') }
 
           out = out.add(tf.scalar(con.weight).mul(inNode.out))
         }
