@@ -1,12 +1,12 @@
 const ConnectionGene = require('./ConnectionGene')
 const NodeGene = require('./NodeGene')
 
+let INNOVATION = 0
+
 class Genome {
   constructor () {
     this.nodes = new Map()
     this.connections = new Map()
-
-    this.INNOVATION = 0
   }
 
   compatibilityDistance (gen2, c1 = 1, c2 = 1, c3 = 1) {
@@ -38,7 +38,7 @@ class Genome {
     // console.log(innovations2)
     // console.log('Excess:', excess, 'Disjoint:', disjoint, 'Matching:', matching)
 
-    averageWeightDiff /= matching
+    averageWeightDiff /= matching || 1
 
     let N = Math.max(innovations1.length, innovations2.length)
 
@@ -47,8 +47,6 @@ class Genome {
 
   crossover (gen2) {
     const child = new Genome()
-    child.INNOVATION = this.INNOVATION
-
     child.nodes = new Map(Array.from(this.nodes.entries()).map(entry => [entry[0], entry[1].copy()]))
 
     for (const entry of this.connections) {
@@ -98,7 +96,7 @@ class Genome {
   }
 
   addNodeMutation () {
-    this.INNOVATION++
+    INNOVATION++
 
     const disabledCon = this._getRandomConnection()
     disabledCon.disable()
@@ -126,7 +124,7 @@ class Genome {
   }
 
   addConnection (inNodeId, outNodeId, enabled = true) {
-    const newCon = new ConnectionGene(inNodeId, outNodeId, enabled, this.INNOVATION++)
+    const newCon = new ConnectionGene(inNodeId, outNodeId, enabled, INNOVATION++)
     this.connections.set(newCon.innovation, newCon)
     const inNode = this.nodes.get(inNodeId)
     const outNode = this.nodes.get(outNodeId)
@@ -186,7 +184,6 @@ class Genome {
     const clone = new Genome()
     clone.nodes = new Map(Array.from(this.nodes.entries()).map(entry => [entry[0], entry[1].copy()]))
     clone.connections = new Map(Array.from(this.connections.entries()).map(entry => [entry[0], entry[1].copy()]))
-    clone.INNOVATION = this.INNOVATION
     return clone
   }
 }
