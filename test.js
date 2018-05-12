@@ -4,6 +4,7 @@ const ConnectionGene = require('./neat/ConnectionGene')
 const NodeGene = require('./neat/NodeGene')
 const Genome = require('./neat/Genome')
 const Graph = require('./viz/Graph')
+const TFGenome = require('./neat/TFGenome')
 
 const gen1 = new Genome()
 gen1.addNode(new NodeGene('INPUT', 0))
@@ -39,18 +40,20 @@ gen2.addConnection(0, 5)
 //   gen.addNodeMutation()
 // }
 
-for (let i = 0; i < 10; i++) {
-  gen2.mutate()
-}
-
-for (let i = 0; i < 10; i++) {
-  gen1.mutate()
-}
+// for (let i = 0; i < 100; i++) {
+//   gen2.mutate()
+// }
+//
+// for (let i = 0; i < 100; i++) {
+//   gen1.mutate()
+// }
 
 console.log('Compatibility distance:', gen2.compatibilityDistance(gen1))
 console.log('Compatibility distance:', gen1.compatibilityDistance(gen2))
 
-Graph.draw(gen2.crossover(gen1))
+Graph.draw(gen1)
+
+TFGenome.toTFGraph(gen1).map(tensor => tensor.print())
 
 const t1 = performance.now()
 console.log('Took ' + (t1 - t0) + ' milliseconds.')
