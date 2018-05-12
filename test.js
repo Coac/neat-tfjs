@@ -5,6 +5,7 @@ const NodeGene = require('./neat/NodeGene')
 const Genome = require('./neat/Genome')
 const Graph = require('./viz/Graph')
 const TFGenome = require('./neat/TFGenome')
+const Neat = require('./neat/Neat.js')
 
 const gen1 = new Genome()
 gen1.addNode(new NodeGene('INPUT', 0))
@@ -52,7 +53,12 @@ console.log('Compatibility distance:', gen2.compatibilityDistance(gen1))
 
 Graph.draw(gen1)
 
-TFGenome.toTFGraph(gen1).map(tensor => tensor.print())
+// TFGenome.toTFGraph(gen1).map(tensor => tensor.print())
+
+const neat = new Neat(gen1, (gen) => -Math.sqrt(200 - gen.nodes.size))
+for (let i = 0; i < 20; i++) {
+  neat.nextGeneration()
+}
 
 const t1 = performance.now()
 console.log('Took ' + (t1 - t0) + ' milliseconds.')
