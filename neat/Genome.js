@@ -70,8 +70,8 @@ class Genome {
     const node = new NodeGene('HIDDEN', this.nodes.size)
     this.addNode(node)
 
-    this.addConnection(disabledCon.inNodeId, node.id)
-    this.addConnection(node.id, disabledCon.outNodeId)
+    this.addConnection(disabledCon.inNodeId, node.id).weight = 1
+    this.addConnection(node.id, disabledCon.outNodeId).weight = disabledCon.weight
   }
 
   addConnectionMutation () {
@@ -99,6 +99,8 @@ class Genome {
     outNode.inConnectionsId.push(newCon.innovation)
 
     this._calculateAllNodeLevel() // TODO optimize, call it where needed
+
+    return newCon
   }
 
   addNode (node) {
