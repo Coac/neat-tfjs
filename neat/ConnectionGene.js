@@ -17,6 +17,10 @@ class ConnectionGene {
     this.weight = gaussianRnd()
   }
 
+  enable () {
+    this.enabled = true
+  }
+
   disable () {
     this.enabled = false
   }

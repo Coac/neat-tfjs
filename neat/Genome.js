@@ -59,6 +59,11 @@ class Genome {
       } else {
         child.connections.set(innovation, con.copy())
       }
+
+      // Reactivate disabled
+      if (!child.connections.get(innovation).enabled && Math.random() > 0.75) {
+        child.connections.get(innovation).enable()
+      }
     }
 
     return child
@@ -109,18 +114,24 @@ class Genome {
   }
 
   addConnectionMutation () {
-    const inNode = this.nodes.get(Math.floor(Math.random() * this.nodes.size))
-    const acceptableNodes = this.getNodes().filter(node => node.level >= inNode.level)
+    let attempt = 0
+    const MAX_ATTEMPT = 100
+    while (attempt++ < MAX_ATTEMPT) {
+      const inNode = this.nodes.get(Math.floor(Math.random() * this.nodes.size))
+      const acceptableNodes = this.getNodes().filter(node => node.level >= inNode.level)
 
-    if (acceptableNodes.length === 0) { return }
+      if (acceptableNodes.length === 0) { continue }
 
-    const outNode = acceptableNodes[Math.floor(Math.random() * acceptableNodes.length)]
+      const outNode = acceptableNodes[Math.floor(Math.random() * acceptableNodes.length)]
 
-    if (inNode === outNode) { return }
-    if (this._existConnection(inNode, outNode)) { return }
-    if (outNode.type === 'INPUT' || inNode === 'OUTPUT') { return }
+      if (inNode === outNode) { continue }
+      if (this._existConnection(inNode, outNode)) { continue }
+      if (outNode.type === 'INPUT' || inNode === 'OUTPUT') { continue }
 
-    this.addConnection(inNode.id, outNode.id)
+      this.addConnection(inNode.id, outNode.id)
+      return
+    }
+    console.log('Add connection mutation failed :(')
   }
 
   addConnection (inNodeId, outNodeId, enabled = true) {
@@ -132,7 +143,7 @@ class Genome {
     inNode.outConnectionsId.push(newCon.innovation)
     outNode.inConnectionsId.push(newCon.innovation)
 
-    this._calculateAllNodeLevel() // TODO optimize, call it where needed
+    this._calculateNodeLevelRecur(inNode, inNode.level - 1)
 
     return newCon
   }
@@ -146,6 +157,7 @@ class Genome {
     return connections[Math.floor(Math.random() * connections.length)]
   }
 
+  // Not used
   _calculateAllNodeLevel () {
     const inputs = this.getNodes().filter(node => node.type === 'INPUT')
     for (let i = 0; i < inputs.length; i++) {

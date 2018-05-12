@@ -36,16 +36,16 @@ gen2.addConnection(5, 3)
 gen2.addConnection(2, 4)
 gen2.addConnection(0, 5)
 
-// for (let i = 0; i < 2; i++) {
-//   gen.addNodeMutation()
-// }
-
 // for (let i = 0; i < 100; i++) {
 //   gen2.mutate()
 // }
 //
 for (let i = 0; i < 10; i++) {
-  gen1.mutate()
+  gen1.addNodeMutation()
+}
+
+for (let i = 0; i < 5; i++) {
+  gen1.addConnectionMutation()
 }
 
 console.log('Compatibility distance:', gen2.compatibilityDistance(gen1))
