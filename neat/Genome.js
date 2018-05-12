@@ -9,7 +9,7 @@ class Genome {
     this.connections = new Map()
   }
 
-  compatibilityDistance (gen2, c1 = 1, c2 = 1, c3 = 1) {
+  compatibilityDistance (gen2, c1 = 1, c2 = 1, c3 = 0.3) {
     const innovations1 = Array.from(this.connections.keys())
     const innovations2 = Array.from(gen2.connections.keys())
 
@@ -75,8 +75,10 @@ class Genome {
     let selectedMutation = this.weightMutation
 
     const mutations = []
-    mutations.push({proba: 0.2, mutation: this.addNodeMutation})
-    mutations.push({proba: 0.8, mutation: this.addConnectionMutation})
+    mutations.push({proba: 0.1, mutation: this.addNodeMutation})
+    mutations.push({proba: 0.1, mutation: this.addConnectionMutation})
+    mutations.push({proba: 0.72, mutation: this.weightMutation})
+    mutations.push({proba: 0.08, mutation: this.resetWeightMutation})
 
     mutations.every(function (object) {
       var proba = object.proba
@@ -97,7 +99,7 @@ class Genome {
   }
 
   resetWeightMutation () {
-    this._getRandomConnection().resetWeight()()
+    this._getRandomConnection().resetWeight()
   }
 
   addNodeMutation () {

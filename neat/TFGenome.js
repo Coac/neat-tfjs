@@ -1,11 +1,19 @@
 const tf = require('@tensorflow/tfjs')
 class TFGenome {
-  static toTFGraph (genome) {
+  static toTFGraph (genome, inputs) {
     return tf.tidy(() => {
       let nodes = genome.getNodes()
-      // const inputs = nodes.filter(node => node.type === 'INPUT')
-      const outputs = nodes.filter(node => node.type === 'OUTPUT')
-      // nodes = nodes.filter(node => node.type === 'HIDDEN' )
+      const inputNodes = nodes.filter(node => node.type === 'INPUT')
+      const outputsNodes = nodes.filter(node => node.type === 'OUTPUT')
+      nodes = nodes.filter(node => node.type !== 'INPUT')
+
+      if (inputs.length !== inputNodes.length) {
+        throw new Error('mismatch inputs length', inputs.length, ' vs ', inputNodes.length)
+      }
+
+      for (let i = 0; i < inputNodes.length; i++) {
+        inputNodes[i].out = tf.tensor(inputs[i])
+      }
 
       nodes.sort((a, b) => a.level - b.level)
 
@@ -19,11 +27,11 @@ class TFGenome {
 
           out = out.add(tf.scalar(con.weight).mul(inNode.out))
         }
-        out = out.relu()
+        out = out.sigmoid()
         node.out = out
       }
 
-      return outputs.map(node => node.out)
+      return outputsNodes.map(node => node.out)
     })
   }
 }

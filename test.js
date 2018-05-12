@@ -37,28 +37,38 @@ gen2.addConnection(5, 3)
 gen2.addConnection(2, 4)
 gen2.addConnection(0, 5)
 
-// for (let i = 0; i < 100; i++) {
-//   gen2.mutate()
-// }
-//
-for (let i = 0; i < 10; i++) {
-  gen1.addNodeMutation()
-}
-
-for (let i = 0; i < 5; i++) {
-  gen1.addConnectionMutation()
-}
-
 console.log('Compatibility distance:', gen2.compatibilityDistance(gen1))
-
-Graph.draw(gen1)
 
 // TFGenome.toTFGraph(gen1).map(tensor => tensor.print())
 
-const neat = new Neat(gen1, (gen) => -Math.sqrt(200 - gen.nodes.size))
-for (let i = 0; i < 20; i++) {
+const startGen = new Genome()
+startGen.addNode(new NodeGene('INPUT', 0))
+startGen.addNode(new NodeGene('INPUT', 1))
+startGen.addNode(new NodeGene('HIDDEN', 2))
+startGen.addNode(new NodeGene('OUTPUT', 3))
+startGen.addConnection(0, 2)
+startGen.addConnection(1, 2)
+startGen.addConnection(2, 3)
+
+const neat = new Neat(startGen, (gen) => {
+  const inputs = [[0, 1, 0, 1], [0, 0, 1, 1]]
+  const labels = [0, 1, 1, 0]
+
+  const outputTensor = TFGenome.toTFGraph(gen, inputs)[0]
+  const output = outputTensor.dataSync()
+
+  // MSE loss
+  let sum = 0
+  for (let i = 0; i < labels.length; i++) {
+    sum += Math.pow(output[i] - labels[i], 2)
+  }
+  return -(sum / labels.length)
+})
+for (let i = 0; i < 10; i++) {
   neat.nextGeneration()
 }
+
+Graph.draw(neat.fittestGenome)
 
 const t1 = performance.now()
 console.log('Took ' + (t1 - t0) + ' milliseconds.')
