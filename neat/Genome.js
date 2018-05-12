@@ -53,23 +53,18 @@ class Genome {
     selectedMutation.call(this)
   }
 
-  biasMutation () {
-
-  }
-
   weightMutation () {
-
+    this._getRandomConnection().peturbWeight()
   }
 
   resetWeightMutation () {
-
+    this._getRandomConnection().resetWeight()()
   }
 
   addNodeMutation () {
     this.INNOVATION++
 
-    const connections = this.getConnections()
-    const disabledCon = connections[Math.floor(Math.random() * connections.length)]
+    const disabledCon = this._getRandomConnection()
     disabledCon.disable()
 
     const node = new NodeGene('HIDDEN', this.nodes.size)
@@ -103,11 +98,16 @@ class Genome {
     inNode.outConnectionsId.push(newCon.innovation)
     outNode.inConnectionsId.push(newCon.innovation)
 
-    this._calculateAllNodeLevel()
+    this._calculateAllNodeLevel() // TODO optimize, call it where needed
   }
 
   addNode (node) {
     this.nodes.set(node.id, node)
+  }
+
+  _getRandomConnection () {
+    const connections = this.getConnections()
+    return connections[Math.floor(Math.random() * connections.length)]
   }
 
   _calculateAllNodeLevel () {

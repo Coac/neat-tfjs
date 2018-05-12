@@ -3,14 +3,16 @@ const vis = require('vis')
 class Graph {
   static draw (genome) {
     const nodes = new vis.DataSet(genome.getNodes().map(node => {
-      let shapeProperties = {}
-      if (node.type === 'INPUT' || node.type === 'OUTPUT') { shapeProperties = { borderDashes: [5, 5] } }
+      let props = {}
+      if (node.type === 'INPUT') { props = { shapeProperties: { borderDashes: [5, 5] }, color: '#87bdd8' } }
+      if (node.type === 'OUTPUT') { props = { color: '#daebe8' } }
+      if (node.type === 'HIDDEN') { props = { color: '#b7d7e8' } }
 
-      return {id: node.id, label: node.type + ' id=' + node.id.toString() + ' lvl=' + node.level, shapeProperties, shape: 'dot'}
+      return Object.assign({id: node.id, label: 'id=' + node.id.toString() + ' lvl=' + node.level, shape: 'circle'}, props)
     }))
 
     const edges = new vis.DataSet(genome.getConnections().map(con => {
-      return con.enabled ? {from: con.inNodeId, to: con.outNodeId} : {}
+      return con.enabled ? {from: con.inNodeId, to: con.outNodeId, label: con.weight.toFixed(3)} : {}
     }))
     const container = document.getElementById('visualization')
     const data = {

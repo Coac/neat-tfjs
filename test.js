@@ -39,9 +39,9 @@ gen2.addConnection(0, 5)
 //   gen.addNodeMutation()
 // }
 
-// for (let i = 0; i < 10; i++) {
-//   gen1.mutate()
-// }
+for (let i = 0; i < 10; i++) {
+  gen2.mutate()
+}
 
 Graph.draw(gen2.crossover(gen1))
 

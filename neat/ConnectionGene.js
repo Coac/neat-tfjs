@@ -6,16 +6,15 @@ class ConnectionGene {
     this.outNodeId = outNodeId
     this.enabled = enabled
     this.innovation = innovation
-    this.weight = gaussianRnd()
+    this.resetWeight()
   }
 
-  weightMutation () {
-    // TODO
-    this.weight = gaussianRnd()
+  peturbWeight () {
+    this.weight += gaussianRnd() / 10
   }
 
   resetWeight () {
-
+    this.weight = gaussianRnd()
   }
 
   disable () {
