@@ -43,6 +43,13 @@ for (let i = 0; i < 10; i++) {
   gen2.mutate()
 }
 
+for (let i = 0; i < 10; i++) {
+  gen1.mutate()
+}
+
+console.log('Compatibility distance:', gen2.compatibilityDistance(gen1))
+console.log('Compatibility distance:', gen1.compatibilityDistance(gen2))
+
 Graph.draw(gen2.crossover(gen1))
 
 const t1 = performance.now()

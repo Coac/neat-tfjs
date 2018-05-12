@@ -9,6 +9,42 @@ class Genome {
     this.INNOVATION = 0
   }
 
+  compatibilityDistance (gen2, c1 = 1, c2 = 1, c3 = 1) {
+    const innovations1 = Array.from(this.connections.keys())
+    const innovations2 = Array.from(gen2.connections.keys())
+
+    const innovationsMax1 = Math.max(...innovations1)
+    const innovationsMax2 = Math.max(...innovations2)
+    const innoMax = Math.max(innovationsMax1, innovationsMax2)
+
+    let excess = 0
+    let disjoint = 0
+    let averageWeightDiff = 0
+    let matching = 0
+    for (let i = 0; i <= innoMax; i++) {
+      const gen1Has = this.connections.has(i)
+      const gen2Has = gen2.connections.has(i)
+      if ((i > innovationsMax1 && gen2Has) || (i > innovationsMax2 && gen1Has)) {
+        excess++
+      } else if ((gen1Has && !gen2Has) || (!gen1Has && gen2Has)) {
+        disjoint++
+      } else if (gen1Has && gen2Has) {
+        averageWeightDiff += Math.abs(this.connections.get(i).weight - gen2.connections.get(i).weight)
+        matching++
+      }
+    }
+
+    // console.log(innovations1)
+    // console.log(innovations2)
+    // console.log('Excess:', excess, 'Disjoint:', disjoint, 'Matching:', matching)
+
+    averageWeightDiff /= matching
+
+    let N = Math.max(innovations1.length, innovations2.length)
+
+    return (c1 * excess + c2 * disjoint) / N + c3 * averageWeightDiff
+  }
+
   crossover (gen2) {
     const child = new Genome()
     child.INNOVATION = this.INNOVATION
