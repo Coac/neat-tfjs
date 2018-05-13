@@ -19,7 +19,7 @@ class Neat {
     this._crossOverAndMutate()
     this._clearSpecies()
 
-    console.log('fitness:', this.highestFitness, ' species:', this.species.length)
+    console.log('fitness:', this.highestFitness, ' species:', this.species.length, ' connections:', this.fittestGenome.connections.size, ' nodes:', this.fittestGenome.nodes.size)
 
     return this.highestFitness
   }
