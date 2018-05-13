@@ -1,3 +1,5 @@
+const MUTATION_POWER = 2
+
 class ConnectionGene {
   constructor (inNodeId, outNodeId, enabled, innovation) {
     this.id = generateId()
@@ -10,11 +12,11 @@ class ConnectionGene {
   }
 
   perturbWeight () {
-    this.weight += Math.random() * 2 - 1 // [-1, 1]
+    this.weight += (Math.random() * 2 - 1) * MUTATION_POWER // [-MUTATION_POWER, MUTATION_POWER]
   }
 
   resetWeight () {
-    this.weight = gaussianRnd()
+    this.weight = Math.random() * 2 - 1
   }
 
   enable () {
@@ -34,10 +36,6 @@ class ConnectionGene {
 
 function generateId () {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-}
-
-function gaussianRnd () {
-  return ((Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random()) - 3) / 3
 }
 
 module.exports = ConnectionGene

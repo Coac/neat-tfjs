@@ -9,7 +9,7 @@ class Neat {
     this.fittestGenome = null
     this.highestFitness = -Infinity
 
-    this.populationSize = 100
+    this.populationSize = 50
   }
 
   nextGeneration () {
@@ -17,9 +17,10 @@ class Neat {
     this._evaluateGenomes()
     this._keepBestGenomes()
     this._crossOverAndMutate()
-    this._clearSpecies()
 
     console.log('fitness:', this.highestFitness, ' species:', this.species.length, ' connections:', this.fittestGenome.connections.size, ' nodes:', this.fittestGenome.nodes.size)
+
+    this._clearSpecies()
 
     return this.highestFitness
   }
@@ -42,8 +43,10 @@ class Neat {
       }
     }
 
+    // Remove empty Species and change representative
     for (let i = 0; i < this.species.length; i++) {
-      if (this.species[i].size() === 0) {
+      const spe = this.species[i]
+      if (spe.size() === 0) {
         this.species.splice(i, 1)
         i--
         console.log('Removed empty species')
@@ -85,9 +88,7 @@ class Neat {
   }
 
   _clearSpecies () {
-    for (const spe of this.species) {
-      spe.clear()
-    }
+    this.species = []
   }
 }
 

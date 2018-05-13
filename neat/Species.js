@@ -1,7 +1,10 @@
+const DROPOFF_AGE = 15 // TODO
+
 class Species {
   constructor (representative) {
     this.representative = representative
     this.genomes = [representative]
+    this.generationWithoutProgress = 0
   }
 
   getRandomGenome () {

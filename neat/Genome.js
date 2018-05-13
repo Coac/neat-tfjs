@@ -91,7 +91,8 @@ class Genome {
     })
 
     this.getNodes().forEach(node => { Math.random() > 0.2 ? node.perturbBias() : node.resetBias() })
-    this.getConnections().forEach(con => con.perturbWeight())
+    // this.getNodes().forEach(node => { if (Math.random() > 0.2) node.perturbBias() })
+    this.getConnections().forEach(con => { if (Math.random() > 0.2) con.perturbWeight() })
 
     selectedMutation.call(this)
   }
