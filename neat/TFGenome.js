@@ -1,4 +1,5 @@
 const tf = require('@tensorflow/tfjs')
+
 class TFGenome {
   static toTFGraph (genome, inputs) {
     return tf.tidy(() => {

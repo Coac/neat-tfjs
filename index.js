@@ -1,3 +1,5 @@
+const tf = require('@tensorflow/tfjs')
+
 const ConnectionGene = require('./neat/ConnectionGene')
 const NodeGene = require('./neat/NodeGene')
 const Genome = require('./neat/Genome')
@@ -27,14 +29,11 @@ function main () {
     const labels = [0, 1, 1, 0]
 
     const outputTensor = TFGenome.toTFGraph(gen, inputs)[0]
-    const output = outputTensor.dataSync()
 
-    // MSE loss
-    let sum = 0
-    for (let i = 0; i < labels.length; i++) {
-      sum += Math.pow(output[i] - labels[i], 2)
-    }
-    return -(sum / labels.length)
+    const mse = (preds, labels) => preds.sub(labels).square().mean()
+    const fitness = -mse(outputTensor, tf.tensor(labels)).dataSync()[0]
+
+    return fitness
   })
 
   function evolve () {
