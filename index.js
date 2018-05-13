@@ -9,6 +9,7 @@ function main () {
   require('./test.js')
 
   document.getElementById('evolve').onclick = evolve
+  document.getElementById('evolve10').onclick = evolve10
 
   const startGen = new Genome()
   startGen.addNode(new NodeGene('INPUT', 0))
@@ -38,6 +39,14 @@ function main () {
 
   function evolve () {
     neat.nextGeneration()
+    graph.update(neat.fittestGenome)
+  }
+
+  function evolve10 () {
+    for (let i = 0; i < 10; i++) {
+      neat.nextGeneration()
+    }
+
     graph.update(neat.fittestGenome)
   }
 }

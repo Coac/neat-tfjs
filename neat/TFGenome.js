@@ -27,7 +27,7 @@ class TFGenome {
 
           out = out.add(tf.scalar(con.weight).mul(inNode.out))
         }
-        out = out.sigmoid()
+        out = tf.sigmoid(out.add(tf.scalar(node.bias)))
         node.out = out
       }
 

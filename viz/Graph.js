@@ -32,12 +32,9 @@ class Graph {
       }
     }
 
+    this.edges.clear()
     for (let edge of edgesArray) {
-      try {
-        this.edges.update(edge)
-      } catch (e) {
-        this.edges.add(edge)
-      }
+      this.edges.add(edge)
     }
   }
 

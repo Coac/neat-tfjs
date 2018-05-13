@@ -25,7 +25,7 @@ class Neat {
   }
 
   _classifyPopulationIntoSpecies () {
-    const compatibilityThreshold = 0.6
+    const compatibilityThreshold = 2
 
     for (const genome of this.genomes) {
       let foundSpecies = false

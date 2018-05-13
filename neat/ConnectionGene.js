@@ -9,8 +9,8 @@ class ConnectionGene {
     this.resetWeight()
   }
 
-  peturbWeight () {
-    this.weight += gaussianRnd() / 10
+  perturbWeight () {
+    this.weight += Math.random() * 2 - 1 // [-1, 1]
   }
 
   resetWeight () {

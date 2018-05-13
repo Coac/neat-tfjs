@@ -75,8 +75,8 @@ class Genome {
     let selectedMutation = this.weightMutation
 
     const mutations = []
-    mutations.push({proba: 0.1, mutation: this.addNodeMutation})
-    mutations.push({proba: 0.1, mutation: this.addConnectionMutation})
+    mutations.push({proba: 0.5, mutation: this.addNodeMutation})
+    mutations.push({proba: 0.5, mutation: this.addConnectionMutation})
     mutations.push({proba: 0.72, mutation: this.weightMutation})
     mutations.push({proba: 0.08, mutation: this.resetWeightMutation})
 
@@ -91,11 +91,26 @@ class Genome {
       return true
     })
 
+    // for (let i = 0; i < this.nodes.size; i++) {
+    //   this.biasMutation()
+    // }
+    //
+    // for (let i = 0; i < this.connections.size; i++) {
+    //   this.weightMutation()
+    // }
+
+    this.getNodes().forEach(node => node.perturbBias())
+    this.getConnections().forEach(con => con.perturbWeight())
+
     selectedMutation.call(this)
   }
 
+  biasMutation () {
+    this._getRandomNode().perturbBias()
+  }
+
   weightMutation () {
-    this._getRandomConnection().peturbWeight()
+    this._getRandomConnection().perturbWeight()
   }
 
   resetWeightMutation () {
@@ -119,7 +134,7 @@ class Genome {
     let attempt = 0
     const MAX_ATTEMPT = 100
     while (attempt++ < MAX_ATTEMPT) {
-      const inNode = this.nodes.get(Math.floor(Math.random() * this.nodes.size))
+      const inNode = this._getRandomNode()
       const acceptableNodes = this.getNodes().filter(node => node.level >= inNode.level)
 
       if (acceptableNodes.length === 0) { continue }
@@ -157,6 +172,10 @@ class Genome {
   _getRandomConnection () {
     const connections = this.getConnections()
     return connections[Math.floor(Math.random() * connections.length)]
+  }
+
+  _getRandomNode () {
+    return this.nodes.get(Math.floor(Math.random() * this.nodes.size))
   }
 
   // Not used
