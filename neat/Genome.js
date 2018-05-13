@@ -75,12 +75,11 @@ class Genome {
     let selectedMutation = this.weightMutation
 
     const mutations = []
-    mutations.push({proba: 0.5, mutation: this.addNodeMutation})
-    mutations.push({proba: 0.5, mutation: this.addConnectionMutation})
-    mutations.push({proba: 0.72, mutation: this.weightMutation})
-    mutations.push({proba: 0.08, mutation: this.resetWeightMutation})
+    mutations.push({proba: 0.33, mutation: this.addNodeMutation})
+    mutations.push({proba: 0.33, mutation: this.addConnectionMutation})
+    mutations.push({proba: 0.33, mutation: this.disableConnectionMutation})
 
-    mutations.every(function (object) {
+    mutations.every((object) => {
       var proba = object.proba
       var mutation = object.mutation
       cumulProba += proba
@@ -91,18 +90,14 @@ class Genome {
       return true
     })
 
-    // for (let i = 0; i < this.nodes.size; i++) {
-    //   this.biasMutation()
-    // }
-    //
-    // for (let i = 0; i < this.connections.size; i++) {
-    //   this.weightMutation()
-    // }
-
-    this.getNodes().forEach(node => node.perturbBias())
+    this.getNodes().forEach(node => { Math.random() > 0.2 ? node.perturbBias() : node.resetBias() })
     this.getConnections().forEach(con => con.perturbWeight())
 
     selectedMutation.call(this)
+  }
+
+  disableConnectionMutation () {
+    this._getRandomConnection().disable()
   }
 
   biasMutation () {
@@ -111,10 +106,6 @@ class Genome {
 
   weightMutation () {
     this._getRandomConnection().perturbWeight()
-  }
-
-  resetWeightMutation () {
-    this._getRandomConnection().resetWeight()
   }
 
   addNodeMutation () {
@@ -176,14 +167,6 @@ class Genome {
 
   _getRandomNode () {
     return this.nodes.get(Math.floor(Math.random() * this.nodes.size))
-  }
-
-  // Not used
-  _calculateAllNodeLevel () {
-    const inputs = this.getNodes().filter(node => node.type === 'INPUT')
-    for (let i = 0; i < inputs.length; i++) {
-      this._calculateNodeLevelRecur(inputs[i], 0)
-    }
   }
 
   _calculateNodeLevelRecur (node, level) {

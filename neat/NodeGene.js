@@ -11,6 +11,10 @@ class NodeGene {
     this.inConnectionsId = []
   }
 
+  resetBias () {
+    this.bias = 0
+  }
+
   perturbBias () {
     this.bias += Math.random() * 2 - 1 // [-1, 1]
   }
