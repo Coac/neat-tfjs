@@ -12,6 +12,7 @@ function main () {
 
   document.getElementById('evolve').onclick = evolve
   document.getElementById('evolve10').onclick = evolve10
+  const infoDOM = document.getElementById('info')
 
   const startGen = new Genome()
   startGen.addNode(new NodeGene('INPUT', 0))
@@ -37,14 +38,18 @@ function main () {
   })
 
   function evolve () {
-    neat.nextGeneration()
+    infoDOM.textContent = JSON.stringify(neat.nextGeneration())
     graph.update(neat.fittestGenome)
   }
 
   function evolve10 () {
-    for (let i = 0; i < 50; i++) {
-      neat.nextGeneration()
+    let info = ''
+    for (let i = 0; i < 10; i++) {
+      info = neat.nextGeneration()
+      console.log(info)
     }
+
+    infoDOM.textContent = JSON.stringify(info)
 
     graph.update(neat.fittestGenome)
   }

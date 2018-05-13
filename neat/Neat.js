@@ -10,19 +10,20 @@ class Neat {
     this.highestFitness = -Infinity
 
     this.populationSize = 50
+    this.generation = 0
   }
 
   nextGeneration () {
+    this._clearSpecies()
+
     this._classifyPopulationIntoSpecies()
     this._evaluateGenomes()
     this._keepBestGenomes()
     this._crossOverAndMutate()
 
-    console.log('fitness:', this.highestFitness, ' species:', this.species.length, ' connections:', this.fittestGenome.connections.size, ' nodes:', this.fittestGenome.nodes.size)
+    this.generation++
 
-    this._clearSpecies()
-
-    return this.highestFitness
+    return {generation: this.generation, highestFitness: this.highestFitness, species: this.species.length, connections: this.fittestGenome.connections.size, nodes: this.fittestGenome.nodes.size}
   }
 
   _classifyPopulationIntoSpecies () {
