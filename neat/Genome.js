@@ -152,7 +152,9 @@ class Genome {
     inNode.outConnectionsId.push(newCon.innovation)
     outNode.inConnectionsId.push(newCon.innovation)
 
-    this._calculateNodeLevelRecur(inNode, inNode.level - 1)
+    if (inNode.level >= outNode.level) {
+      this._calculateNodeLevelRecur(outNode, inNode.level)
+    }
 
     return newCon
   }
