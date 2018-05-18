@@ -1,6 +1,6 @@
 # neat-tfjs
 
-Javascript implementation of the [NEAT neuroevolution algorithm](Evolving Neural Networks through Augmenting Topologies) using tf.js
+Javascript implementation of the [NEAT neuroevolution algorithm](http://nn.cs.utexas.edu/?stanley:ec02) using tf.js
 
 
 **This project is still work in progress.**
